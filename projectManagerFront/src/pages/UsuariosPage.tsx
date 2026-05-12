@@ -9,6 +9,16 @@ const columns = [
   { key: "fullname", label: "Nombre Completo" },
   { key: "email", label: "Email" },
   { key: "rol", label: "Rol", render: (row: User) => row.rol.name },
+  {
+    key: "acciones",
+    label: "Acciones",
+    render: () => (
+      <>
+        <Button variant="outline">Editar</Button>
+        <Button variant="outline" className="ml-2">Eliminar</Button>
+      </>
+    ),
+  },
 ];
 
 export default function UsuariosPage() {
@@ -26,7 +36,7 @@ export default function UsuariosPage() {
       <div className="mx-4">
         <TableReusable<User>
           columns={columns}
-          data={users}  
+          data={users}
           selectableRows
           selectedRows={(row) => selected.includes(row.id)}
           onRowSelect={(row, checked) => {
