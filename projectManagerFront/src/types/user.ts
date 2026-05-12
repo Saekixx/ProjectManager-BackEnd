@@ -4,8 +4,8 @@ export interface User {
   password: string;
   fullname: string;
   email: string;
-  create_at: string;
-  update_at: string;
+  create_at?: string;
+  update_at?: string;
   rol: Rol;
 }
 
