@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
 
-import { SidebarProvider } from "../ui/sidebar";
-import SideBar from "../SideBar";
+import { SidebarProvider } from "../../ui/sidebar";
+import SideBar from "../../SideBar";
+import Header from "../Header";
 
 const sideBarItems = [
   { name: "Dashboard", url: "/", icon: "🏠" },
@@ -15,11 +16,7 @@ function Layout() {
       <div className="flex min-h-screen w-full">
         <SideBar items={sideBarItems} />
         <div className="flex-1 flex flex-col">
-          <header className="border-b">
-            <div className="flex items-center justify-between p-4">
-              <h1 className="text-xl font-bold">My App</h1>
-            </div>
-          </header>
+          <Header />
           <main className="flex-1 p-6">
             <Outlet />
           </main>

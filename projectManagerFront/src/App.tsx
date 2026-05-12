@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage";
 import ProyectosPage from "./pages/ProyectosPage";
 import UsuariosPage from "./pages/UsuariosPage";
-import Layout from "@/components/Layout/Layout";
+import Layout from "@/components/public/layout/Layout";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 function App() {

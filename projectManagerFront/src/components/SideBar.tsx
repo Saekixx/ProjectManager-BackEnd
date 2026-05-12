@@ -24,7 +24,7 @@ const SideBar: React.FC<SideBarProps> = ({ items }) => {
   const location = useLocation();
 
   return (
-    <Sidebar className="min-h-screen border-r bg-white dark:bg-background flex flex-col w-56">
+    <Sidebar className="min-h-screen border-r bg-white dark:bg-background flex flex-col w-64">
       <SidebarHeader className="flex flex-col items-center py-6">
         <img
           src="/favicon.svg"
