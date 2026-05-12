@@ -1,5 +1,6 @@
 package com.project.manager.Models;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +30,9 @@ public class Task {
     @Column
     private String description;
     @Column
-    private String created_at;
+    private LocalDateTime created_at;
     @Column
-    private String updated_at;
+    private LocalDateTime updated_at;
 
     // Relación con Project (proyecto al que pertenece la tarea)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,4 +48,14 @@ public class Task {
     )
     private List<User> assignedUsers;
 
+    @PrePersist 
+    protected void onCreate() {
+        created_at = LocalDateTime.now();
+        updated_at = LocalDateTime.now();
+    }
+
+    @PreUpdate 
+    protected void onUpdate() {
+        updated_at = LocalDateTime.now();
+    }
 }
