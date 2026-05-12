@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.project.manager.DTO.UserRequestDTO;
 import com.project.manager.Models.Rol;
@@ -18,6 +20,14 @@ public class UserService {
 
     public List<User> all() {
         return userRepository.findAll();
+    }
+
+    public List<User> getByIdNot(Long id) {
+        return userRepository.findByIdNot(id);
+    }
+
+    public User getById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public User save(UserRequestDTO data) {
