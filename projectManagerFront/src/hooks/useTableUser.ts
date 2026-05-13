@@ -1,5 +1,5 @@
-import { getAllUsers } from "@/service/User/UserService";
-import type { User } from "@/types/user";
+import { getAllUsers, createUser } from "@/service/User/UserService";
+import type { UserRequest, User } from "@/types/user";
 import { useEffect, useState } from "react";
 
 export function useTableUser() {
@@ -17,5 +17,17 @@ export function useTableUser() {
     }
   }, []);
 
-  return { users };
+  const handleCreateUser = async (userData: UserRequest) => {
+    try {
+      const message = await createUser(userData);
+      alert(message);
+      // Actualizamos la lista de usuario
+      const response = await getAllUsers();
+      setUsers(response);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
+
+  return { users, handleCreateUser };
 }

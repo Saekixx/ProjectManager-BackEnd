@@ -9,6 +9,14 @@ export interface User {
   rol: Rol;
 }
 
+export interface UserRequest {
+  username: string;
+  email: string;
+  password: string;
+  fullname: string;
+  rolId: number | unknown;
+}
+
 export interface Rol {
   id: number;
   name: string;

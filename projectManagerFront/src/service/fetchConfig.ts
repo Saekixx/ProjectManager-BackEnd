@@ -22,7 +22,6 @@ export async function postConfig<TResponse, TRequest>(
   return data as TResponse;
 }
 
-// Función para realizar una solicitud GET a la API
 export async function getConfig<TResponse>(
   endpoint: string,
 ): Promise<TResponse> {
