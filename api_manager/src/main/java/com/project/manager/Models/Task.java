@@ -13,8 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,9 +27,9 @@ public class Task {
     private String name;
     @Column
     private String description;
-    @Column
+    @Column(name = "create_at", updatable = false)
     private LocalDateTime created_at;
-    @Column
+    @Column(name = "updated_at", insertable = false)
     private LocalDateTime updated_at;
 
     // Relación con Project (proyecto al que pertenece la tarea)
@@ -48,14 +46,4 @@ public class Task {
     )
     private List<User> assignedUsers;
 
-    @PrePersist 
-    protected void onCreate() {
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
-    }
-
-    @PreUpdate 
-    protected void onUpdate() {
-        updated_at = LocalDateTime.now();
-    }
 }

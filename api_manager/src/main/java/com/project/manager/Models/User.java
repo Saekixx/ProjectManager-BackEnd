@@ -1,7 +1,5 @@
 package com.project.manager.Models;
 
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -10,8 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,21 +26,11 @@ public class User {
     private String password;
     @Column
     private String fullname;
-    @Column
+    @Column(name = "create_at", updatable = false)
     private LocalDateTime created_at;
-    @Column
+    @Column(name = "updated_at", insertable = false)
     private LocalDateTime updated_at;
     @OneToOne
     private Rol rol;
 
-    @PrePersist 
-    protected void onCreate() {
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
-    }
-
-    @PreUpdate 
-    protected void onUpdate() {
-        updated_at = LocalDateTime.now();
-    }
 }

@@ -13,8 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +33,7 @@ public class Project {
     @JoinColumn(name = "leader_id")
     private User leader;
 
+    // Relación con User (miembros del proyecto)
     @ManyToMany
     @JoinTable(
         name = "project_miembros",
@@ -43,19 +42,9 @@ public class Project {
     )
     private List<User> membUsers;
 
-    @Column
+    @Column(name = "create_at", updatable = false)
     private LocalDateTime created_at;
-    @Column
+    @Column(name = "updated_at", insertable = false)
     private LocalDateTime updated_at;
 
-    @PrePersist 
-    protected void onCreate() {
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
-    }
-
-    @PreUpdate 
-    protected void onUpdate() {
-        updated_at = LocalDateTime.now();
-    }
 }
