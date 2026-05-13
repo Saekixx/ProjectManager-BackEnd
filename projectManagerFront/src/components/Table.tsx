@@ -19,18 +19,18 @@ type Column<T> = {
 type TableReusableProps<T> = {
   columns: Column<T>[];
   data: T[];
-  selectableRows?: boolean;
-  selectedRows?: (row: T) => boolean;
-  onRowSelect?: (row: T, checked: boolean) => void;
+  // selectableRows?: boolean;
+  // selectedRows?: (row: T) => boolean;
+  // onRowSelect?: (row: T, checked: boolean) => void;
   caption?: string;
 };
 
 export function TableReusable<T extends { id?: string | number }>({
   columns,
   data,
-  selectableRows = false,
-  selectedRows,
-  onRowSelect,
+  // selectableRows = false,
+  // selectedRows,
+  // onRowSelect,
   caption,
 }: TableReusableProps<T>) {
   return (
@@ -38,7 +38,7 @@ export function TableReusable<T extends { id?: string | number }>({
       {caption && <TableCaption>{caption}</TableCaption>}
       <TableHeader>
         <TableRow>
-          {selectableRows && <TableHead></TableHead>}
+          {/* Eliminado checkbox de selección */}
           {columns.map((col) => (
             <TableHead
               key={col.key as string}
@@ -51,20 +51,8 @@ export function TableReusable<T extends { id?: string | number }>({
       </TableHeader>
       <TableBody>
         {data.map((row, idx) => (
-          <TableRow
-            key={row.id ?? idx}
-            data-state={selectedRows?.(row) ? "selected" : undefined}
-          >
-            {selectableRows && (
-              <TableCell>
-                <input
-                  type="checkbox"
-                  checked={!!selectedRows?.(row)}
-                  onChange={(e) => onRowSelect?.(row, e.target.checked)}
-                  aria-label="Seleccionar fila"
-                />
-              </TableCell>
-            )}
+          <TableRow key={row.id ?? idx}>
+            {/* Eliminado checkbox de selección */}
             {columns.map((col) => (
               <TableCell
                 key={col.key as string}

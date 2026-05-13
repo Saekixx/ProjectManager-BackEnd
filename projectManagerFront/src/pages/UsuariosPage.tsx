@@ -4,7 +4,6 @@ import ModalCreateUser from "@/components/User/ModalCreateUser";
 import { Button } from "@/components/ui/button";
 import { useTableUser } from "@/hooks/useTableUser";
 import type { User } from "@/types/user";
-import { useState } from "react";
 
 const columns = [
   { key: "fullname", label: "Nombre Completo" },
@@ -25,8 +24,6 @@ const columns = [
 ];
 
 export default function UsuariosPage() {
-  const [selected, setSelected] = useState<number[]>([]);
-
   const { users, handleCreateUser } = useTableUser();
 
   return (
@@ -37,17 +34,7 @@ export default function UsuariosPage() {
         <ModalCreateUser onCreate={handleCreateUser} />
       </div>
       <div className="mx-4">
-        <TableReusable<User>
-          columns={columns}
-          data={users}
-          selectableRows
-          selectedRows={(row) => selected.includes(row.id)}
-          onRowSelect={(row, checked) => {
-            setSelected((sel) =>
-              checked ? [...sel, row.id] : sel.filter((id) => id !== row.id),
-            );
-          }}
-        />
+        <TableReusable<User> columns={columns} data={users} />
       </div>
     </div>
   );
