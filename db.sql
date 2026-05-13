@@ -13,6 +13,7 @@ create table user(
     username char(80) not null,
     password char(255) not null,
     fullname char(150) not null,
+    email char(150) not null unique,
     create_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp on update current_timestamp ,
     rol_id int references rol(id)
@@ -47,5 +48,17 @@ create table task_assignment(
 	task_id int references task(id) on delete cascade,
     user_id int references user(id) on delete cascade,
     primary key(task_id, user_id)
-)
+);
 
+-- Insertando Datos
+insert rol values (null,'Administrador','Administrador con acceso total al sistema'),
+				  (null,'Colaborador','Usuario del sistema');
+                  
+
+insert into user (username, password, fullname, email, rol_id) values 
+				 ('admin', 'admin123', 'Jack Leandro Hernandez',"admin@example.com", 1),
+				 ('carlos_dev', 'user123', 'Carlos Mendoza',"carlos@example.com", 2),
+				 ('ana_coder', 'user123', 'Ana García',"ana@example.com", 2),
+				 ('maria_qa', 'user123', 'Maria Rojas',"maria@example.com", 2),
+				 ('pedro_backend', 'user123', 'Pedro Picapiedra',"pedro@example.com", 2),
+				 ('sofia_frontend', 'user123', 'Sofia Loren',"sofia@example.com", 2);
