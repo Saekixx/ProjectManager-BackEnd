@@ -59,4 +59,35 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public String update(Long id, UserRequestDTO data) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        if (data.getUsername() != null && !data.getUsername().isEmpty()) {
+            user.setUsername(data.getUsername());
+        }
+
+        if (data.getFullname() != null && !data.getFullname().isEmpty()) {
+            user.setFullname(data.getFullname());
+        }
+
+        if (data.getEmail() != null && !data.getEmail().isEmpty()) {
+            user.setEmail(data.getEmail());
+        }
+
+        if (data.getPassword() != null && !data.getPassword().isEmpty()) {
+            user.setPassword(data.getPassword());
+        }
+
+        if (data.getRolId() != null) {
+            Rol rol = rolRepository.findById(data.getRolId())
+                .orElseThrow(() -> new RuntimeException("No se encontró el rol con ID: " + data.getRolId()));
+            user.setRol(rol);
+        }
+
+        userRepository.save(user);
+        return "Usuario actualizado exitosamente";
+    }
 }
+

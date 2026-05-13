@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("api/users")
@@ -123,5 +122,33 @@ public class UserController {
         }
     }
     
-    
+    @PutMapping("edit/{id}")
+    public ResponseEntity<ApiResponse<String>> editUser(@PathVariable String id, @RequestBody UserRequestDTO entity) {
+        try {
+            User user = userService.getById(Long.parseLong(id));
+            if (user == null) {
+                ApiResponse<String> response = new ApiResponse<>(
+                    404,
+                    "Usuario no encontrado",
+                    null
+                );
+                return ResponseEntity.status(404).body(response);
+            }else{
+                String result = userService.update(Long.parseLong(id), entity);
+                ApiResponse<String> response = new ApiResponse<>(
+                    200,
+                    result,
+                    null
+                );
+                return ResponseEntity.ok(response);
+            }
+        } catch (Exception e) {
+            ApiResponse<String> response = new ApiResponse<>(
+                500,
+                "Error al actualizar el usuario",
+                null
+            );
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }
