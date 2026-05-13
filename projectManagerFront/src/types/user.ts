@@ -14,7 +14,7 @@ export interface UserRequest {
   email: string;
   password: string;
   fullname: string;
-  rolId: number | unknown;
+  rolId: number;
 }
 
 export interface Rol {

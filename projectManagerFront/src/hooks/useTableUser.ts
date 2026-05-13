@@ -1,4 +1,4 @@
-import { getAllUsers, createUser } from "@/service/User/UserService";
+import { getAllUsers, createUser, updateUser } from "@/service/User/UserService";
 import type { UserRequest, User } from "@/types/user";
 import { useEffect, useState } from "react";
 
@@ -29,5 +29,16 @@ export function useTableUser() {
     }
   };
 
-  return { users, handleCreateUser };
+  const handleEditUser = async (id: number, userData: UserRequest) => {
+    try {
+      const message = await updateUser(id, userData);
+      alert(message);
+      const response = await getAllUsers();
+      setUsers(response);
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
+  };
+
+  return { users, handleCreateUser, handleEditUser };
 }
