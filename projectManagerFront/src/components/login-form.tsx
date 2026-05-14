@@ -10,6 +10,7 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm({
   className,
@@ -18,11 +19,11 @@ export function LoginForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { handleLogin, error } = useAuth();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el inicio de sesión
-    console.log("Email:", email);
-    console.log("Password:", password);
+    handleLogin(email, password);
   };
 
   return (
@@ -44,7 +45,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="example@gmail.com"
+                  placeholder="you@example.com"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -57,11 +58,13 @@ export function LoginForm({
                 <Input
                   id="password"
                   type="password"
+                  placeholder="*********"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Field>
+              {error && <p className="text-red-500">{error}</p>}
               <Field>
                 <Button type="submit">Login</Button>
               </Field>

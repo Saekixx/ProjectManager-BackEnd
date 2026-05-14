@@ -5,7 +5,7 @@ import SideBar from "../../SideBar";
 import Header from "../Header";
 
 const sideBarItems = [
-  { name: "Dashboard", url: "/", icon: "🏠" },
+  { name: "Dashboard", url: "/dashboard", icon: "🏠" },
   { name: "Proyectos", url: "/proyectos", icon: "📁" },
   { name: "Usuarios", url: "/usuarios", icon: "👥" },
 ];

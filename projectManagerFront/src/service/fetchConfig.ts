@@ -1,16 +1,27 @@
 const BASE_URL = "http://localhost:8080/api/";
 
-export async function postConfig<TResponse, TRequest>(
-  endpoint: string,
-  postData: TRequest,
-): Promise<TResponse> {
+// Función auxiliar para obtener headers con el token
+const getHeaders = (): Record<string, string> => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
 
+  const token = localStorage.getItem("token");
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return headers;
+};
+
+// Función genérica para hacer peticiones GET, POST y PUT
+export async function postConfig<TResponse, TRequest>(
+  endpoint: string,
+  postData: TRequest,
+): Promise<TResponse> {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     method: "POST",
-    headers,
+    headers: getHeaders(),
     body: JSON.stringify(postData),
   });
 
@@ -27,9 +38,7 @@ export async function getConfig<TResponse>(
 ): Promise<TResponse> {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getHeaders(),
   });
 
   const data = await response.json().catch(() => ({}));
@@ -44,13 +53,9 @@ export async function putConfig<TResponse, TRequest>(
   endpoint: string,
   putData: TRequest,
 ): Promise<TResponse> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
   const response = await fetch(`${BASE_URL}${endpoint}`, {
-    method: "PUT", // <--- Este es el cambio clave
-    headers,
+    method: "PUT",
+    headers: getHeaders(),
     body: JSON.stringify(putData),
   });
 

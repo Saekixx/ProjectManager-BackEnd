@@ -11,7 +11,13 @@ export default function UsuariosPage() {
   const columns = [
     { key: "fullname", label: "Nombre Completo" },
     { key: "email", label: "Email" },
-    { key: "rolId", label: "Rol", render: (row: User) => row.rol.name },
+    {
+      key: "rolId",
+      label: "Rol",
+      render: (row: User) =>
+        row.rol.name.charAt(0).toUpperCase() +
+        row.rol.name.slice(1).toLowerCase(),
+    },
     {
       key: "acciones",
       label: "Acciones",
