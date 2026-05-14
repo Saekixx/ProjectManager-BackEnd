@@ -10,14 +10,12 @@ import com.project.manager.Models.Project;
 import com.project.manager.Services.ProjectService;
 import com.project.manager.Utils.ApiResponse;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
 @RequestMapping("/api/projects")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ProjectController {
     @Autowired private ProjectService projectService;
 

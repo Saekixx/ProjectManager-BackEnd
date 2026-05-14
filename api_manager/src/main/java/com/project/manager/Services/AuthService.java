@@ -1,8 +1,8 @@
 package com.project.manager.Services;
 
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,28 +23,29 @@ public class AuthService {
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(UserService userService, RolRepository rolRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(UserService userService, RolRepository rolRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.rolRepository = rolRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
-        this.authenticationManagerBuilder = new AuthenticationManagerBuilder(null);
+        this.authenticationManager = authenticationManager;
     }
 
     // Método para autenticar al usuario y generar un token JWT
-    public String authenticate(String username, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authResult = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+    public String login(String email, String password) {
+        Authentication authResult = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(email, password)
+        );
         SecurityContextHolder.getContext().setAuthentication(authResult);
         return jwtUtil.generateToken(authResult);
     }
 
     @Transactional
     public User register(UserRequestDTO data){
-        if(userService.existByUsername(data.getUsername())){
-            throw new RuntimeException("El nombre de usuario ya existe");
+        if(userService.existByEmail(data.getEmail())){
+            throw new RuntimeException("El correo electrónico ya está en uso");
         }
         // Buscar los roles en la base de datos, si no existen lanzar una excepción
         Rol rol = rolRepository.findById(data.getRolId())

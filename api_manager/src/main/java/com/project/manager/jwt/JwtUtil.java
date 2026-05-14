@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+@Component
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret; // Valor de la propiedad jwt.secret definido en el archivo application.properties
@@ -76,5 +78,9 @@ public class JwtUtil {
     // para obtener los reclamos del token y luego obtenemos el sujeto (nombre de usuario)
     public String extractUsername(String token){
         return extractAllClaims(token).getSubject();
+    }
+
+    public List<String> extractRoles(String token) {
+        return extractAllClaims(token).get("roles", List.class);
     }
 }

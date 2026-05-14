@@ -10,7 +10,6 @@ import com.project.manager.Models.Rol;
 import com.project.manager.Services.RolService;
 import com.project.manager.Utils.ApiResponse;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("api/rol")
-@CrossOrigin(origins = "http://localhost:5173")
 public class RolController {
     @Autowired private RolService rolService;
 

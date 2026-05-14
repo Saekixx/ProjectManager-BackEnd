@@ -26,20 +26,20 @@ public class UserService implements UserDetailsService {
 
     // Auth Service para cargar el usuario por username y validar el token JWT
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRol().getName());
 
         return new org.springframework.security.core.userdetails.User(
-            user.getUsername(), 
+            user.getEmail(), 
             user.getPassword(), 
             Collections.singleton(authority)
         );
     }
 
-    public boolean existByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public boolean existByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     public User save(User user) {

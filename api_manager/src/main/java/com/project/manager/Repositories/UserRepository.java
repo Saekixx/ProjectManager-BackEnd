@@ -13,9 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Funcion para obtener todos los usuarios excepto el que se le pasa por id
     List<User> findByIdNot(Long id);
     
-    // Funcion para obtener un usuario por su username
-    Optional<User> findByUsername(String username);
+    // Funcion para obtener un usuario por su email
+    Optional<User> findByEmail(String email);
 
-    // Funcion para verificar si existe un usuario por su username
-    boolean existsByUsername(String username);
+    // Funcion para verificar si existe un usuario por su email
+    boolean existsByEmail(String email);
 }
