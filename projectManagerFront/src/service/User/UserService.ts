@@ -9,7 +9,7 @@ export async function getAllUsers(): Promise<User[]> {
 
 export async function createUser(data: UserRequest): Promise<string> {
   const response = await postConfig<ApiResponse<string>, UserRequest>(
-    "users/create",
+    "auth/create",
     data,
   );
   return response.status === 201
