@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.manager.DTO.User.UserRequestDTO;
 import com.project.manager.Models.User;
+import com.project.manager.Services.AuthService;
 import com.project.manager.Services.UserService;
 import com.project.manager.Utils.ApiResponse;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     @Autowired private UserService userService;
+    @Autowired private AuthService authService;
 
     @GetMapping("")
     public ResponseEntity<ApiResponse<List<User>>> allUser() {
@@ -103,7 +105,7 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<User>> createUser(@RequestBody UserRequestDTO data) {
         try {
-            User user = userService.save(data);
+            User user = authService.register(data);
 
             ApiResponse<User> response = new ApiResponse<>(
                 201,

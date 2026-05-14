@@ -6,22 +6,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.project.manager.Services.AuthService;
+import com.project.manager.Services.UserService;
 
 import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
     private JwtUtil jwtUtil;
-    private AuthService authService;
+    private UserService userService;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, AuthService authService) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
-        this.authService = authService;
+        this.userService = userService;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = authService.loadUserByUsername(username);
+            UserDetails userDetails = userService.loadUserByUsername(username);
 
             if(jwtUtil.validateToken(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

@@ -7,5 +7,4 @@ import com.project.manager.Models.Rol;
 
 @Repository
 public interface RolRepository extends JpaRepository<Rol, Long> {
-    
 }

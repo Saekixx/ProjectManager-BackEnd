@@ -1,8 +1,13 @@
 package com.project.manager.Services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.project.manager.DTO.User.UserRequestDTO;
@@ -11,10 +16,37 @@ import com.project.manager.Models.User;
 import com.project.manager.Repositories.RolRepository;
 import com.project.manager.Repositories.UserRepository;
 
+import lombok.NoArgsConstructor;
+
 @Service
-public class UserService {
+@NoArgsConstructor
+public class UserService implements UserDetailsService {
     @Autowired private UserRepository userRepository;
     @Autowired private RolRepository rolRepository;
+
+    // Auth Service para cargar el usuario por username y validar el token JWT
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRol().getName());
+
+        return new org.springframework.security.core.userdetails.User(
+            user.getUsername(), 
+            user.getPassword(), 
+            Collections.singleton(authority)
+        );
+    }
+
+    public boolean existByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    // Métodos CRUD para User
 
     public List<User> all() {
         return userRepository.findAll();
