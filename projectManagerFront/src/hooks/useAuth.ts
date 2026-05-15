@@ -1,10 +1,18 @@
 import { login } from "@/service/User/AuthService";
-import { useState } from "react";
+import { authContext, type EstadoAuth } from "@/context/AuthContext";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function useAuth() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const auth = useContext(authContext);
+
+  if (!auth) {
+    throw new Error("useAuth debe usarse dentro de StateCompo");
+  }
+
+  const { estadoAuth, setEstadoAuth } = auth;
 
   const handleLogin = async (email: string, password: string) => {
     setError(null);
@@ -13,8 +21,15 @@ export function useAuth() {
       const res = await login(email, password);
 
       if (res.status === 200) {
-        navigate("/dashboard");
         localStorage.setItem("token", res.data);
+        const nextAuthState: EstadoAuth = {
+          status: res.status,
+          message: res.message || "Inicio de sesión correcto",
+          data: res.data,
+        };
+
+        setEstadoAuth(nextAuthState);
+        navigate("/dashboard");
       } else {
         setError(res.message || "Credenciales incorrectas");
       }
@@ -25,5 +40,5 @@ export function useAuth() {
       setError(errorMessage);
     }
   };
-  return { handleLogin, error };
+  return { handleLogin, error, estadoAuth, setEstadoAuth };
 }
