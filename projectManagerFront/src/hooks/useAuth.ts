@@ -40,5 +40,12 @@ export function useAuth() {
       setError(errorMessage);
     }
   };
-  return { handleLogin, error, estadoAuth, setEstadoAuth };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setEstadoAuth({ status: 0, message: "", data: "" });
+    navigate("/login");
+  };
+
+  return { handleLogin, handleLogout, error, estadoAuth, setEstadoAuth };
 }

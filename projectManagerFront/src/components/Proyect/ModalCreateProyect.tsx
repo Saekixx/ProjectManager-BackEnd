@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 import type { ProyectoRequest, Proyecto } from "@/types/proyect";
 import {
   Dialog,
