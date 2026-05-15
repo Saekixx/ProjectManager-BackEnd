@@ -17,6 +17,7 @@ import com.project.manager.Utils.ApiResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -70,4 +71,25 @@ public class ProjectController {
         }
     }
     
+    @PostMapping("edit/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Project>> editProject(@PathVariable String id, @RequestBody ProjectCreateDTO data) {
+        try {
+            String msg = projectService.update(Long.valueOf(id), data);
+
+            ApiResponse<Project> response = new ApiResponse<>(
+                200,
+                msg,
+                null
+            );
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            ApiResponse<Project> response = new ApiResponse<>(
+                500,
+                "Error al editar el proyecto",
+                null
+            );
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }

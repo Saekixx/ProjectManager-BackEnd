@@ -14,3 +14,14 @@ export async function createProject(data: ProyectoRequest): Promise<string> {
   );
   return response.message;
 }
+
+export async function updateProject(
+  id: number,
+  data: ProyectoRequest,
+): Promise<string> {
+  const response = await postConfig<ApiResponse<string>, ProyectoRequest>(
+    `projects/edit/${id}`,
+    data,
+  );
+  return response.message;
+}

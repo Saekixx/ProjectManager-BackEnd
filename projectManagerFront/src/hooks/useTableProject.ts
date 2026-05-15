@@ -3,6 +3,7 @@ import type { Proyecto, ProyectoRequest } from "@/types/proyect";
 import {
   createProject,
   getAllProyectos,
+  updateProject,
 } from "@/service/Proyect/ProyectService";
 import type { User } from "@/types/user";
 import { getAllUsers } from "@/service/User/UserService";
@@ -41,5 +42,16 @@ export function useTableProject() {
     }
   };
 
-  return { projects, users, handleCreateProject };
+  const handleUpdateProject = async (id: number, data: ProyectoRequest) => {
+    try {
+      const message = await updateProject(id, data);
+      alert(message);
+      const response = await getAllProyectos();
+      setProjects(response);
+    } catch (error) {
+      console.error("Error updating project:", error);
+    }
+  };
+
+  return { projects, users, handleCreateProject, handleUpdateProject };
 }

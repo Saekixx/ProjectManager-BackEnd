@@ -82,4 +82,32 @@ public class ProjectService {
         projectRepository.save(newProject);
         return "Proyecto creado exitosamente";
     }
+
+    @Transactional
+    public String update(Long id, ProjectCreateDTO data) {
+        Project project = projectRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Proyecto no encontrado con ID: " + id));
+
+        if (data.getName() != null && !data.getName().isEmpty()) {
+            project.setName(data.getName());
+        }
+
+        if (data.getDescription() != null && !data.getDescription().isEmpty()) {
+            project.setDescription(data.getDescription());
+        }
+
+        if (data.getLeaderId() != null) {
+            User leader = userRepository.findById(data.getLeaderId())
+                .orElseThrow(() -> new RuntimeException("Líder no encontrado"));
+            project.setLeader(leader);
+        }
+
+        if (data.getMemberIds() != null) {
+            List<User> members = userRepository.findAllById(data.getMemberIds());
+            project.setMembUsers(members);
+        }
+
+        projectRepository.save(project);
+        return "Proyecto actualizado exitosamente";
+    }
 }

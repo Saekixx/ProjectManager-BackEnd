@@ -6,7 +6,8 @@ import { useTableProject } from "@/hooks/useTableProject";
 import type { Proyecto } from "@/types/proyect";
 
 function ProyectosPage() {
-  const { projects, users, handleCreateProject } = useTableProject();
+  const { projects, users, handleCreateProject, handleUpdateProject } =
+    useTableProject();
 
   const columns = [
     { key: "name", label: "Nombre" },
@@ -28,10 +29,7 @@ function ProyectosPage() {
         <>
           <ModalCreateProyect
             allUsuarios={users}
-            onSubmitAction={async (data) => {
-              // Aquí podrías implementar la lógica para actualizar el proyecto
-              console.log("Actualizando proyecto con datos:", data);
-            }}
+            onSubmitAction={(user) => handleUpdateProject(row.id, user)}
             project={row}
           />
           <Button

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.manager.DTO.User.UserDTO;
 import com.project.manager.DTO.User.UserRequestDTO;
 import com.project.manager.Models.User;
+import com.project.manager.Services.AuthService;
 import com.project.manager.Services.UserService;
 import com.project.manager.Utils.ApiResponse;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
+    @Autowired private AuthService authService;
     @Autowired private UserService userService;
 
     @GetMapping("")
@@ -115,7 +117,7 @@ public class UserController {
                 );
                 return ResponseEntity.status(404).body(response);
             }else{
-                String result = userService.update(Long.parseLong(id), entity);
+                String result = authService.update(Long.parseLong(id), entity);
                 ApiResponse<String> response = new ApiResponse<>(
                     200,
                     result,

@@ -1,6 +1,7 @@
 package com.project.manager.Services;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,12 +14,14 @@ import com.project.manager.DTO.User.UserRequestDTO;
 import com.project.manager.Models.Rol;
 import com.project.manager.Models.User;
 import com.project.manager.Repositories.RolRepository;
+import com.project.manager.Repositories.UserRepository;
 import com.project.manager.jwt.JwtUtil;
 
 
 @Service
 public class AuthService {
-    
+    @Autowired UserRepository userRepository;
+
     private final UserService userService;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
@@ -59,5 +62,38 @@ public class AuthService {
         user.setRol(rol);
         // Guardar el nuevo usuario en la base de datos
         return userService.save(user);
+    }
+
+    @Transactional
+    public String update(Long id, UserRequestDTO data) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        if (data.getUsername() != null && !data.getUsername().isEmpty()) {
+            user.setUsername(data.getUsername());
+        }
+
+        if (data.getFullname() != null && !data.getFullname().isEmpty()) {
+            user.setFullname(data.getFullname());
+        }
+
+        if (data.getEmail() != null && !data.getEmail().isEmpty()) {
+            user.setEmail(data.getEmail());
+        }
+
+        if (data.getPassword() != null && !data.getPassword().isEmpty()) {
+            // Encriptar la nueva contraseña antes de guardarla
+            String passwordEncriptada = passwordEncoder.encode(data.getPassword());
+            user.setPassword(passwordEncriptada);
+        }
+
+        if (data.getRolId() != null) {
+            Rol rol = rolRepository.findById(data.getRolId())
+                .orElseThrow(() -> new RuntimeException("No se encontró el rol con ID: " + data.getRolId()));
+            user.setRol(rol);
+        }
+
+        userRepository.save(user);
+        return "Usuario actualizado exitosamente";
     }
 }
