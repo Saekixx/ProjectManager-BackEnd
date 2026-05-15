@@ -15,8 +15,8 @@ export default function UsuariosPage() {
       key: "rolId",
       label: "Rol",
       render: (row: User) =>
-        row.rol.name.charAt(0).toUpperCase() +
-        row.rol.name.slice(1).toLowerCase(),
+        row.role.name.charAt(0).toUpperCase() +
+        row.role.name.slice(1).toLowerCase(),
     },
     {
       key: "acciones",

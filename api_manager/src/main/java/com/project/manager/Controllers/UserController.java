@@ -2,6 +2,7 @@ package com.project.manager.Controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.manager.DTO.User.UserDTO;
 import com.project.manager.DTO.User.UserRequestDTO;
 import com.project.manager.Models.User;
 import com.project.manager.Services.UserService;
@@ -25,11 +26,11 @@ public class UserController {
 
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResponse<List<User>>> allUser() {
+    public ResponseEntity<ApiResponse<List<UserDTO>>> allUser() {
         try {
-            List<User> user = userService.all();
+            List<UserDTO> user = userService.all();
 
-            ApiResponse<List<User>> response = new ApiResponse<>(
+            ApiResponse<List<UserDTO>> response = new ApiResponse<>(
                 200,
                 "Usuarios obtenidos exitosamente",
                 user
@@ -37,7 +38,7 @@ public class UserController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            ApiResponse<List<User>> response = new ApiResponse<>(
+            ApiResponse<List<UserDTO>> response = new ApiResponse<>(
                 500,
                 "Error al obtener los usuarios",
                 null

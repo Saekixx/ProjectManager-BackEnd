@@ -73,7 +73,7 @@ function ModalCreateUser({ user, onSubmitAction }: ModalCreateUserProps) {
           username: user.username,
           email: user.email,
           fullname: user.fullname,
-          rolId: user.rol.id,
+          rolId: user.role.id,
           password: "",
         });
       } else {

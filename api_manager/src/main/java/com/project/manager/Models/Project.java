@@ -42,7 +42,7 @@ public class Project {
     )
     private List<User> membUsers;
 
-    @Column(name = "create_at", updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime created_at;
     @Column(name = "updated_at", insertable = false)
     private LocalDateTime updated_at;

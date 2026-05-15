@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.project.manager.DTO.User.UserDTO;
 import com.project.manager.DTO.User.UserRequestDTO;
 import com.project.manager.Models.Rol;
 import com.project.manager.Models.User;
@@ -48,8 +49,17 @@ public class UserService implements UserDetailsService {
 
     // Métodos CRUD para User
 
-    public List<User> all() {
-        return userRepository.findAll();
+    public List<UserDTO> all() {
+        userRepository.findAll();
+        return userRepository.findAll().stream().map(user -> {
+            UserDTO dto = new UserDTO();
+            dto.setId(user.getId());
+            dto.setUsername(user.getUsername());
+            dto.setFullname(user.getFullname());
+            dto.setEmail(user.getEmail());
+            dto.setRole(user.getRol());
+            return dto;
+        }).toList();
     }
 
     public List<User> getByIdNot(Long id) {

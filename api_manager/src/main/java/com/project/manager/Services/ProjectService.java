@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.manager.DTO.Project.ProjectCreateDTO;
+import com.project.manager.DTO.Project.ProjectDTO;
+import com.project.manager.DTO.User.UserDTO;
 import com.project.manager.Models.Project;
 import com.project.manager.Models.User;
 import com.project.manager.Repositories.ProjectRepository;
@@ -18,8 +20,45 @@ public class ProjectService {
     @Autowired private ProjectRepository projectRepository;
     @Autowired private UserRepository userRepository;
 
+    public List<ProjectDTO> all() {
+        List<Project> projects = projectRepository.findAll();
+        return projects.stream().map(project -> {
+            ProjectDTO dto = new ProjectDTO();
+            dto.setId(project.getId());
+            dto.setName(project.getName());
+            dto.setDescription(project.getDescription());
+            dto.setCreated_at(project.getCreated_at().toString());
+            dto.setUpdated_at(project.getUpdated_at() != null ? project.getUpdated_at().toString() : null);
+
+            User leader = project.getLeader();
+            if (leader != null) {
+                UserDTO leaderDTO = new UserDTO();
+                leaderDTO.setId(leader.getId());
+                leaderDTO.setFullname(leader.getFullname());
+                leaderDTO.setEmail(leader.getEmail());
+                leaderDTO.setRole(leader.getRol());
+                dto.setLeaderId(leaderDTO);
+            }
+
+            List<User> members = project.getMembUsers();
+            if (members != null && !members.isEmpty()) {
+                List<UserDTO> memberDTOs = members.stream().map(member -> {
+                    UserDTO memberDTO = new UserDTO();
+                    memberDTO.setId(member.getId());
+                    memberDTO.setFullname(member.getFullname());
+                    memberDTO.setEmail(member.getEmail());
+                    memberDTO.setRole(member.getRol());
+                    return memberDTO;
+                }).toList();
+                dto.setMemberIds(memberDTOs);
+            }
+
+            return dto;
+        }).toList();
+    }
+
     @Transactional
-    public Project save(ProjectCreateDTO data) {
+    public String save(ProjectCreateDTO data) {
         if (data.getName() == null || data.getName().isEmpty()) {
             throw new IllegalArgumentException("El nombre del proyecto no puede ser nulo o vacío");
         }
@@ -40,7 +79,7 @@ public class ProjectService {
             List<User> members = userRepository.findAllById(data.getMemberIds());
             newProject.setMembUsers(members);
         }
-        
-        return projectRepository.save(newProject);
+        projectRepository.save(newProject);
+        return "Proyecto creado exitosamente";
     }
 }

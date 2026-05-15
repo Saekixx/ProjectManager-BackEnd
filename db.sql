@@ -24,7 +24,7 @@ create table project(
     name char(100) not null,
     leader_id int references user(id),
     description char(255) not null,
-    create_at timestamp default current_timestamp,
+    created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp on update current_timestamp 
 );
 
@@ -51,8 +51,8 @@ create table task_assignment(
 );
 
 -- Insertando Datos
-insert rol values (null,'Administrador','Administrador con acceso total al sistema'),
-				  (null,'Colaborador','Usuario del sistema');
+insert rol values (null,'ADMINISTRADOR','Administrador con acceso total al sistema'),
+				  (null,'COLABORADOR','Usuario del sistema');
                   
 
 insert into user (username, password, fullname, email, rol_id) values 
